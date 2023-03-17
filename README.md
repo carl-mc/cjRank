@@ -28,7 +28,7 @@ decision-making does not contradict the assumptions underlying conjoint
 experiments and typical Average Marginal Component Effect (AMCE)
 estimates ([Hainmüller et al.,
 2014](https://doi.org/10.1093/pan/mpt024)). Yet, AMCEs and other average
-quantitites such as Marginal Means ([Leeper et al.,
+quantities such as Marginal Means ([Leeper et al.,
 2020](https://doi.org/10.1017/pan.2019.30)) depict such decision-making
 inadequately as they average over preference directions and intensities
 ([Abramson et al., 2022](https://doi.org/10.1111/ajps.12714)) across all
