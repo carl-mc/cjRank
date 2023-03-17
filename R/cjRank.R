@@ -562,9 +562,9 @@ cjRank <- R6::R6Class(classname = "cjRank",
                             
                             ## Make contrasts
                             result <- do.call(rbind, lapply(seq_len(length(order)-1), function(i){
-                              print(i)
+
                               do.call(rbind, lapply(colnames(self$attr_cat), function(a){
-                                print(a)
+
                                 # Formula
                                 attr <- colnames(self$features)[
                                   gsub("\\.[0-9]+$", "", colnames(self$features)) == a

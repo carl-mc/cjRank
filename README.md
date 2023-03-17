@@ -4,7 +4,7 @@
 
 This package helps researchers to compute attribute feature rankings,
 nested marginal means for conjoint experiments, and within-rank marginal
-means as described by Dill, Howlett and Muller-Crepon (AJPS, 2023) and
+means as described by Dill, Howlett and Müller-Crepon (AJPS, 2023) and
 briefly outlined below.
 
 When using the method and/or package, please cite:
@@ -265,28 +265,6 @@ are invariant.
 
 ``` r
 within_mm <- ukr_rank$get_within_rank_margmean(adj_coocurrence = TRUE)
-```
-
-    ## [1] 1
-    ## [1] "attr1_level"
-    ## [1] "attr2_level"
-    ## [1] "attr3_level"
-    ## [1] "attr4_level"
-    ## [1] "attr5_level"
-    ## [1] 2
-    ## [1] "attr1_level"
-    ## [1] "attr2_level"
-    ## [1] "attr3_level"
-    ## [1] "attr4_level"
-    ## [1] "attr5_level"
-    ## [1] 3
-    ## [1] "attr1_level"
-    ## [1] "attr2_level"
-    ## [1] "attr3_level"
-    ## [1] "attr4_level"
-    ## [1] "attr5_level"
-
-``` r
 head(within_mm)
 ```
 

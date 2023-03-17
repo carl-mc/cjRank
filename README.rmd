@@ -12,7 +12,7 @@ output:
 
 ## Introduction
 
-This package helps researchers to compute attribute feature rankings, nested marginal means for conjoint experiments, and within-rank marginal means as described by Dill, Howlett and Muller-Crepon (AJPS, 2023) and briefly outlined below.  
+This package helps researchers to compute attribute feature rankings, nested marginal means for conjoint experiments, and within-rank marginal means as described by Dill, Howlett and Müller-Crepon (AJPS, 2023) and briefly outlined below.  
 
 When using the method and/or package, please cite: 
 
