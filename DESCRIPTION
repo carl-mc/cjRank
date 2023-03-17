@@ -1,0 +1,14 @@
+Package: cjRank
+Title: Attribute feature ranking and nested marginal means for conjoint experiments
+Version: 1.0
+Author: Carl Muller-Crepon
+Maintainer: Carl Muller-Crepon <c.a.muller-crepon@lse.ac.uk>
+Depends: R (>= 3.5.0)
+Description: This package helps researchers to compute attribute feature rankings, nested marginal means for conjoint experiments, and within-rank marginal means as described by Dill, Howlett and Muller-Crepon (AJPS, 2023). When using the method and/or package, please cite: Dill, Janina, Howlett, Marnie, & Muller-Crepon, Carl (2022). At Any Cost: How Ukrainians Think about Self-Defense Against Russia. American Journal of Political Science, forthcoming. 
+License: file LICENSE
+Encoding: UTF-8
+Imports: plyr,
+    R6,
+    fixest
+LazyData: true
+RoxygenNote: 7.2.2

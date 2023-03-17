@@ -1,0 +1,132 @@
+---
+title: "cjRank: Conjoint Attribute Feature Ranking Methods"
+author: "Carl Muller-Crepon"
+output:
+   md_document:
+      variant: gfm
+
+---
+
+
+# cjRank: Conjoint Attribute Feature Ranking Methods
+
+## Introduction
+
+This package helps researchers to compute attribute feature rankings, nested marginal means for conjoint experiments, and within-rank marginal means as described by Dill, Howlett and Muller-Crepon (AJPS, 2023) and briefly outlined below.  
+
+When using the method and/or package, please cite: 
+
+Dill, Janina, Howlett, Marnie, & Müller-Crepon, Carl (2022). At Any Cost: How Ukrainians Think about Self-Defense Against Russia. _American Journal of Political Science_, forthcoming. 
+
+## The method
+
+
+In conjoint experiments, respondents may at times overwhelmingly respond in categorical terms to some attribute features. This occurs when they (almost) always accept or reject a profile with given attribute level, irrespective of the values of other attributes. Such a categorical logic implies a ranking of (un)desirable features so that a strategy characterized by the most resisted (desired) feature $f_1$ across all attributes and levels is rejected (accepted) \textit{irrespective of all lower-ranked features}. If $f_1$ characterizes either none or both profiles in a task, choices are guided by categorical reactions to the second-ranked feature $f_2$, etc. Such decision-making does not contradict the assumptions underlying conjoint experiments and typical Average Marginal Component Effect (AMCE) estimates ([Hainmüller et al., 2014](https://doi.org/10.1093/pan/mpt024)). Yet, AMCEs and other average quantitites such as Marginal Means ([Leeper et al., 2020](https://doi.org/10.1017/pan.2019.30)) depict such decision-making inadequately as they average over preference directions and intensities ([Abramson et al., 2022](https://doi.org/10.1111/ajps.12714)) across all tasks. The latter can be very high for highly-ranked features in categorical decision-making. 
+
+
+But what is the ranking of attribute features? As we explain in the article, we answer use a heuristic approach: We start choosing the first-ranked feature $f_1$ as that with a co-occurrence adjusted marginal mean closest to either 0 or 1, being the feature with the greatest predictive power over respondents' choices. A feature with a marginal mean predicts respondents' choices no better than a coin toss while marginal means of 0 or 1 signal perfect predictive power since respondents always decide in favor or against profiles with that attribute feature if given a choice.
+We then identify the second-ranked feature $f_2$, but using only strategy pairs in which $f_1$ is either absent or invariant. For this sub-sample we proceed as before, estimating _nested marginal means_ to delineate $f_2$. Again only keeping pairs without variation in $f_2$, we proceed in the same manner until all features are ranked or we run out of statistical power. Alongside the nested marginal means we can also compute _within-rank_ marginal means which tell us how important features are at a certain rank. I.e., for the second ranked feature $f_2$, we can compute marginal means for all attributes across all tasks in which 1) $f_2$ varies but 2) the first ranked feature $f_1$ does not vary. 
+
+Standard errors of the feature ranks and ordering can be derived by bootstrapping clustered at the respondent- or task-level. Naturally, the subset of the data to compute each consecutive rank shrinks, at times rapidly. Users should therefore pay attention not to overinterpret the relative ranking among lowly-ranked attributes. 
+
+## Installation
+
+You can directly download and install the cjRank package from GitHub. Upon installation, the package should automatically install all necessary R dependencies. If this is not the case, the user may see an error and have install the following modules manually. 
+
+```{r, eval = F}
+# Download pspm package
+library(devtools)
+install_github(repo = "carl-mc/cjRank")
+```
+
+
+## Getting started
+
+Users get started by preparing a "long" dataset of their conjoint experiment in which each row corresponds to one profile seen by one respondent. A set of columns should correspond to one categorical attribute with two or more levels from which one was randomly chosen, as indicated by the value the variable takes for a given profile. Co-occurrence of the same attribute level (a.k.a. feature) within a subset of tasks facilitates the ranking as it leads to larger samples for distinguishing between lower-ranked features. The dataset must have one column with a binary outcome variable, denoting the outcome of a forced choice between exactly two profiles in a task. The ranking method does not work for non-binary outcomes and is not prepared for tasks with more than two profiles (though this extension is, in theory, possible). Each dataset should also have one column with a unique respondent ID and one column with a unique task ID, nested within respondents. The package includes a mock dataset (taken as a subset of the data in the original article) for illustrative purposes. 
+
+```{r, eval = T, warning=FALSE, message=F}
+# Packages
+library(cjRank)
+library(ggplot2)
+
+# Load data
+data("ukraine")
+
+# Define objects with varible names
+
+## Categorical attribute variables
+attr.vars <- paste0("attr", 1:5, "_level")
+
+## Binary outcome variable
+outcome <- "choice"
+
+## Unique respondent ID
+respid <- "id"
+
+## Unique task x respondent ID
+taskid <- "resp_pair"
+
+```
+
+
+## Setting up a cjRank object
+
+To initialize the computation of a feature ranking, we first set up a `cjRank` object (working through the `R6` package). All operations will be made through this object which acts as a data container that ensures the consistency of our operations. Note that upon initialization, we must set a `min_obs` parameter, which indicates the minimum number of observations needed to compute the next-ranked feature. In addition tho the bootstrapping of standard errors, setting this parameter to a reasonable high value avoids inferences from small subsets of the data. 
+
+```{r, eval = T}
+ukr_rank <- cjRank$new(data = ukraine, 
+                   outcome.var = outcome,
+                   task_id.var = taskid,
+                   attr_cat.var = attr.vars,
+                   resp_id.var = respid,
+                   min_obs = 100,
+                   cluster_var = respid)
+```
+
+
+## Derive order and ranking of attribute features
+
+We can first query the ordering of features as long as the data subsets the computation relies on remains larger than `min_obs`. the `feature_key` entry of our `cjRank`object retains the original entries of the categorical variable. Since the ordering vector of attribute features does not include all features (the two last features of an attribute receive the same rank and one is exclude from the ordering vector), we can also query the rank each attribute feature receives. 
+```{r, eval = T}
+
+order <- ukr_rank$get_order()
+ukr_rank$feature_key[order]
+
+ukr_rank$get_ranks()
+
+
+```
+
+
+## Bootstrapp the ordering
+To assess the uncertainty of the ranking, we can bootstrap, i.e., resampling respondents or tasks in our data with replacement. 
+
+```{r, eval = T}
+set.seed(1)
+ukr_rank$get_ranks_bs(iter = 100)
+```
+
+## Nested marginal means
+With our ranking of features, we can proceed to producing marginal means estimates for every rank. 
+```{r, eval = T}
+nested_mm <- ukr_rank$get_nested_margmean(adj_coocurrence = TRUE)
+head(nested_mm)
+```
+
+
+## F-statistics of differences between nested marginal means
+Next, we can estimate whether the marginal means computed for the various ranks are indeed different from each other using an omnibus test and it's F-Statistic (see [Leeper et al., 2020](https://doi.org/10.1017/pan.2019.30))
+```{r, eval = T}
+ukr_rank$get_rank_fstats()
+```
+
+## Within-rank marginal means
+Lastly, we can estimate within-rank marginal means for every rank. These answer the question of the effect of a feature -- say $f_2$ -- on choices for tasks in which higher ranked feature (i.e., $f_1$) do not appear or are invariant. 
+```{r, eval = T}
+within_mm <- ukr_rank$get_within_rank_margmean(adj_coocurrence = TRUE)
+head(within_mm)
+```
+
+
+## Feedback, comments, questions
+We are very grateful for any bug reports, feedback, questions, or contributions to this package. Please report any issues here or write to c.a.muller-crepon [at] lse.ac.uk .
