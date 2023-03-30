@@ -13,6 +13,10 @@ Dill, Janina, Howlett, Marnie, & Müller-Crepon, Carl (2023). At Any
 Cost: How Ukrainians Think about Self-Defense Against Russia. *American
 Journal of Political Science*, forthcoming.
 
+You can find the publication for all technical details [here]() and as
+ungated version
+[here](http://www.carlmueller-crepon.org/publication/at_any_cost/).
+
 ## The method
 
 In conjoint experiments, respondents may at times overwhelmingly respond
