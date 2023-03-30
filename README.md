@@ -9,7 +9,7 @@ briefly outlined below.
 
 When using the method and/or package, please cite:
 
-Dill, Janina, Howlett, Marnie, & Müller-Crepon, Carl (2022). At Any
+Dill, Janina, Howlett, Marnie, & Müller-Crepon, Carl (2023). At Any
 Cost: How Ukrainians Think about Self-Defense Against Russia. *American
 Journal of Political Science*, forthcoming.
 

@@ -16,7 +16,7 @@ This package helps researchers to compute attribute feature rankings, nested mar
 
 When using the method and/or package, please cite: 
 
-Dill, Janina, Howlett, Marnie, & Müller-Crepon, Carl (2022). At Any Cost: How Ukrainians Think about Self-Defense Against Russia. _American Journal of Political Science_, forthcoming. 
+Dill, Janina, Howlett, Marnie, & Müller-Crepon, Carl (2023). At Any Cost: How Ukrainians Think about Self-Defense Against Russia. _American Journal of Political Science_, forthcoming. 
 
 ## The method
 
